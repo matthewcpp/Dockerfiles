@@ -1,4 +1,4 @@
-# matthewcpp/sfz2n64
+# matthewcpp/framework64-audio
 
 This file will build a compiled version of labmerjamesd's [sfz2n64](https://github.com/lambertjamesd/sfz2n64) tool and provide audio conversion functionality for [framework64](https://github.com/matthewcpp/framework64).
 
