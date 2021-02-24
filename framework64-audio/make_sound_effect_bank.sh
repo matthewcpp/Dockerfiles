@@ -1,20 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# First, Compress all aiff files into aifc
+cd workspace
 
-aiff_files=`ls workspace/*.aiff`
-for aiff_file in $aiff_files
-do
-   echo "Compressing: $aiff_file --> ${aiff_file/aiff/aifc}"
-   /sfz2n64 -o ${aiff_file/aiff/aifc} $aiff_file
+types_needing_conversion="ogg wav"
+ins_file="NONE"
+
+sound_files=`ls`
+for sound_file in $sound_files ; do
+	extension="${sound_file##*.}"
+
+	for file_type in $types_needing_conversion ; do
+		if [ "$extension" = "$file_type" ]; then
+			/snd2aiff ${sound_file}
+			filename="${sound_file%.*}"
+			/sfz2n64 -o ${filename}.aifc ${filename}.aiff
+		fi
+	done
+
+	if [ "$extension" = "aiff" ]; then
+		/sfz2n64 -o ${sound_file/aiff/aifc} $sound_file
+	fi
+
+	if [ "$extension" = "ins" ]; then
+		ins_file=$sound_file
+	fi
 done
 
-# Build the sound bank from the instrument file
-ins_files=`ls workspace/*.ins`
-for ins_file in $ins_files
-do
+if [ "$ins_file" != "NONE" ]; then
 	basename="${ins_file%.*}"
-	echo "building $ins_file --> ${basename}.ctl"
+	echo "building sound effect bank: $ins_file --> ${basename}.ctl"
 	/sfz2n64 -o "${basename}.ctl" $ins_file
-	break
-done
+else
+	echo "Unable to create sound effect bank: No .ins file present"
+	exit 1
+fi
