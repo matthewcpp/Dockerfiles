@@ -10,7 +10,7 @@ double working_buffer[WORKING_BUFFER_LEN];
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        puts("Usage: ./snd2ogg /path/to/src_path.snd");
+        puts("Usage: ./snd2aiff /path/to/src_path.snd");
         return 1;
     }
 
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     strncpy(dest_path, src_path, base_path_len);
     strcpy(dest_path + base_path_len, ".aiff");
 
-    printf("%s --> %s", src_path, dest_path);
+    printf("%s --> %s\n", src_path, dest_path);
 
     SF_INFO dest_info = source_info;
     dest_info.channels = 1;
@@ -56,6 +56,9 @@ int main(int argc, char** argv) {
             for (int i = 0; i < read_count; i += source_info.channels) {
                 working_buffer[actual_buffer_count++] = working_buffer[i];
             }
+        }
+        else {
+            actual_buffer_count = read_count;
         }
 
         sf_write_double (dest_file, working_buffer, actual_buffer_count) ;
