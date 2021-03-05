@@ -1,0 +1,12 @@
+from ubuntu
+
+ENV PATH=/usr/lib/llvm-10/bin:${PATH}
+ENV NXDK_DIR=/nxdk
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y build-essential cmake flex bison clang lld git llvm && \
+    git clone --recursive https://github.com/XboxDev/nxdk.git /nxdk && \
+    cd /nxdk/samples/sdl && \
+    make && \
+    mkdir /src
+
