@@ -13,3 +13,5 @@ RUN dpkg --add-architecture i386 && apt-get update && \
     apt-get install -y binutils-mips-n64 gcc-mips-n64 libgcc-mips-n64 root-compatibility-environment && \
     apt-get install -y n64sdk makemask spicy libnustd libnusys libnaudio libmus rsp-tools && \
     rm -rf /var/lib/apt/lists/*
+
+COPY build_all_n64_examples.sh /
